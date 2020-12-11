@@ -49,7 +49,7 @@ TreeModel::~TreeModel()
 	{
 		delete rootItem;
 	}
-	itemVector.clear();///itemVectorÖĞµÄÔªËØÔÚdelete rootItem´¦Îö¹¹
+	itemVector.clear();///itemVectorä¸­çš„å…ƒç´ åœ¨delete rootItemå¤„ææ„
 	qDeleteAll(itemToDelVector);
 	itemToDelVector.clear();
 	qDeleteAll(itemHideVector);
@@ -70,39 +70,39 @@ QVariant TreeModel::data(const QModelIndex& index, int role) const
 		return QVariant();
 	QVariant d;
 	TreeItem* item = getItem(index);
-	if (item->isVirtualItem())///Ä¿Â¼½ÚµãÌØÊâ´¦Àí£¬Ä¿Â¼½ÚµãµÄÖµ¶¼´æÔÚµÚÒ»ÁĞ£¬³ı·ÇindexµÄÁĞÎªÊÓÍ¼¿É¼ûµÄµÚÒ»ÁĞ£¬·ñÔò¶¼²»ÏÔÊ¾Êı¾İ
+	if (item->isVirtualItem())///ç›®å½•èŠ‚ç‚¹ç‰¹æ®Šå¤„ç†ï¼Œç›®å½•èŠ‚ç‚¹çš„å€¼éƒ½å­˜åœ¨ç¬¬ä¸€åˆ—ï¼Œé™¤éindexçš„åˆ—ä¸ºè§†å›¾å¯è§çš„ç¬¬ä¸€åˆ—ï¼Œå¦åˆ™éƒ½ä¸æ˜¾ç¤ºæ•°æ®
 	{
 		//if (head && head->logicalIndexAt(0) == index.column())
 		//{
 		//	//d = item->data(0, role);
 		//}
-		//if (!d.isValid() && !(d = attrOfColumns.value(index.column()).value(role)).isValid())	///ÁĞ¼¶±ğ
-		//	d = attrOfModel.value(role);	///model È«¾Ö¼¶±ğ
+		//if (!d.isValid() && !(d = attrOfColumns.value(index.column()).value(role)).isValid())	///åˆ—çº§åˆ«
+		//	d = attrOfModel.value(role);	///model å…¨å±€çº§åˆ«
 		if (role == Qt::FontRole)
 		{
-			d = attrOfModel.value(role);///Ö»±£Áô×ÖÌåĞÅÏ¢£¬ÆäËûĞÅÏ¢¶¼É¾³ı£¬£¨Ä³ÖÖĞÅÏ¢»áµ¼ÖÂÄ¿Â¼½ÚµãÎŞ·¨¿çÁĞ£¬²¢ÇÒÑ¡ÖĞÊ±text²»ÏÔÊ¾£©
+			d = attrOfModel.value(role);///åªä¿ç•™å­—ä½“ä¿¡æ¯ï¼Œå…¶ä»–ä¿¡æ¯éƒ½åˆ é™¤ï¼Œï¼ˆæŸç§ä¿¡æ¯ä¼šå¯¼è‡´ç›®å½•èŠ‚ç‚¹æ— æ³•è·¨åˆ—ï¼Œå¹¶ä¸”é€‰ä¸­æ—¶textä¸æ˜¾ç¤ºï¼‰
 		}
 		return d;
 	}
 	else
 	{
-		if (!(d = item->data(index.column(), role)).isValid())	///µ¥Ôª¸ñ¼¶±ğ
-			if (!(d = attrOfColumns.value(index.column()).value(role)).isValid())	///ÁĞ¼¶±ğ
-				d = attrOfModel.value(role);	///model È«¾Ö¼¶±ğ
+		if (!(d = item->data(index.column(), role)).isValid())	///å•å…ƒæ ¼çº§åˆ«
+			if (!(d = attrOfColumns.value(index.column()).value(role)).isValid())	///åˆ—çº§åˆ«
+				d = attrOfModel.value(role);	///model å…¨å±€çº§åˆ«
 	}
 
 	switch (role)
 	{
-		//case Qt::DisplayRole:	//ÏÔÊ¾µÄÎÄ±¾
+		//case Qt::DisplayRole:	//æ˜¾ç¤ºçš„æ–‡æœ¬
 		//	return d;
 	case Qt::EditRole:
 		return item->data(index.column(), Qt::DisplayRole);
-	case Qt::ForegroundRole:	//ÎÄ±¾ÑÕÉ«
+	case Qt::ForegroundRole:	//æ–‡æœ¬é¢œè‰²
 	{
 		quint32 color = d.toULongLong();
 		return QColor((color & 0xff0000) >> 16, (color & 0xff00) >> 8, (color & 0xff), (color & 0xff000000) >> 24);
 	}
-	case Qt::TextAlignmentRole:	//ÎÄ±¾Í£¿¿Î»ÖÃ
+	case Qt::TextAlignmentRole:	//æ–‡æœ¬åœé ä½ç½®
 	{
 		int align = d.toInt();
 		Rcspace::RcTextAlignment aenum = static_cast<Rcspace::RcTextAlignment>(align);
@@ -113,14 +113,14 @@ QVariant TreeModel::data(const QModelIndex& index, int role) const
 		int ienum = d.toInt();
 		return Rcspace::specialIcon(static_cast<Rcspace::RcIconEnum>(ienum));
 	}
-	//case Qt::FontRole:	//×ÖÌå
+	//case Qt::FontRole:	//å­—ä½“
 	//	return d;
-	case Qt::BackgroundRole:	//±³¾°É«
+	case Qt::BackgroundRole:	//èƒŒæ™¯è‰²
 	{
 		quint32 color = d.toULongLong();
 		return QColor((color & 0xff0000) >> 16, (color & 0xff00) >> 8, (color & 0xff), (color & 0xff000000) >> 24);
 	}
-	//case Qt::CheckStateRole:	//¹´Ñ¡
+	//case Qt::CheckStateRole:	//å‹¾é€‰
 	//	return d;
 	default:
 		return d;
@@ -210,12 +210,12 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex& index) const
 	{
 		defaultFlags |= Qt::ItemIsUserCheckable;
 	}
-	///Èç¹ûItemÉèÖÃÁË²»¿É±à¼­,ÆÁ±ÎEditRole
+	///å¦‚æœItemè®¾ç½®äº†ä¸å¯ç¼–è¾‘,å±è”½EditRole
 	TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
 	if (item && item != rootItem && item->data(index.column(), EditEnableRole).isValid() && !item->data(index.column(), EditEnableRole).toBool())
 	{
 		defaultFlags &= ~Qt::ItemIsEditable;
-		defaultFlags &= ~Qt::ItemIsUserCheckable;	///°ÑuserCheckableÒ²×÷ÎªEditEnableRoleµÄÒ»²¿·Ö
+		defaultFlags &= ~Qt::ItemIsUserCheckable;	///æŠŠuserCheckableä¹Ÿä½œä¸ºEditEnableRoleçš„ä¸€éƒ¨åˆ†
 	}
 	if (!itemIsSelectable)
 	{
@@ -227,17 +227,17 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex& index) const
 
 void TreeModel::sort(int column, Qt::SortOrder order)
 {
-	//HeadView->flipSortIndicatorº¯ÊıÖĞ»áµ÷ÓÃsetSortIndicator£¬È»ºóemit sortIndicatorChanged ĞÅºÅ
-	//TreeView ½ÓÊÕsortIndicatorChangedĞÅºÅºó£¬»áµ÷ÓÃ´Ë´¦µÄsortº¯Êı¡£
-	//¶øÔÚHeadView->flipSortIndicator·µ»Øºó£¬²Å»áemit sectionClicked ĞÅºÅ¡£
-	//ÔÚheadViewÖĞ£¬Ôö¼ÓÁËsectionClickedĞÅºÅµÄ´¦Àíº¯ÊıonSectionClicked£¬ÉèÖÃ±íÍ·¶àÁĞÅÅĞòÑùÊ½¡£
-	//ÕâÁ½´¦Ğè±£³ÖĞ§¹ûÍ¬²½
+	//HeadView->flipSortIndicatorå‡½æ•°ä¸­ä¼šè°ƒç”¨setSortIndicatorï¼Œç„¶åemit sortIndicatorChanged ä¿¡å·
+	//TreeView æ¥æ”¶sortIndicatorChangedä¿¡å·åï¼Œä¼šè°ƒç”¨æ­¤å¤„çš„sortå‡½æ•°ã€‚
+	//è€Œåœ¨HeadView->flipSortIndicatorè¿”å›åï¼Œæ‰ä¼šemit sectionClicked ä¿¡å·ã€‚
+	//åœ¨headViewä¸­ï¼Œå¢åŠ äº†sectionClickedä¿¡å·çš„å¤„ç†å‡½æ•°onSectionClickedï¼Œè®¾ç½®è¡¨å¤´å¤šåˆ—æ’åºæ ·å¼ã€‚
+	//è¿™ä¸¤å¤„éœ€ä¿æŒæ•ˆæœåŒæ­¥
 
 	if (column < 0 || column >= columnCount()) return;
 	sortColumn = column;
 	QPair<int, Qt::SortOrder> colSort(column, order);
 	bool bHasSorted = false;
-	if (QApplication::keyboardModifiers() == Qt::ShiftModifier) ///shift ¼ü°´ÏÂ£¬¿ªÆô¶àÁĞÅÅĞò£¬ÀıÍâ£º²ÎÓë·Ö×éµÄ×Ö¶ÎÒ»¶¨»á²ÎÓëÅÅĞò
+	if (QApplication::keyboardModifiers() == Qt::ShiftModifier) ///shift é”®æŒ‰ä¸‹ï¼Œå¼€å¯å¤šåˆ—æ’åºï¼Œä¾‹å¤–ï¼šå‚ä¸åˆ†ç»„çš„å­—æ®µä¸€å®šä¼šå‚ä¸æ’åº
 	{
 		this->ableMultiColumnSort = true;
 		for (auto& it : orderColumns)
@@ -253,7 +253,7 @@ void TreeModel::sort(int column, Qt::SortOrder order)
 				//	}
 				//}
 				bHasSorted = true;
-				if (it.second == order)///ÅÅĞòË³ĞòÒ»ÖÂ£¬Ö±½ÓÌø³ö
+				if (it.second == order)///æ’åºé¡ºåºä¸€è‡´ï¼Œç›´æ¥è·³å‡º
 				{
 					return;
 				}
@@ -270,7 +270,7 @@ void TreeModel::sort(int column, Qt::SortOrder order)
 		MultiColumnOrder temp;
 		temp.swap(orderColumns);
 		MultiColumnOrder::iterator it, ite = temp.end();
-		for (it = temp.begin(); it != ite; it++)	///±£Áô²ÎÓë·Ö×éµÄ×Ö¶Î£¬ÒÔ¼°µ±Ç°ÅÅĞò×Ö¶Î
+		for (it = temp.begin(); it != ite; it++)	///ä¿ç•™å‚ä¸åˆ†ç»„çš„å­—æ®µï¼Œä»¥åŠå½“å‰æ’åºå­—æ®µ
 		{
 			//if (groupColumns.indexOf((*it).first) > -1 && column != (*it).first)
 			//{
@@ -287,9 +287,9 @@ void TreeModel::sort(int column, Qt::SortOrder order)
 			}
 		}
 	}
-	//orderColumns.append(colSort);///ÎŞÂÛÈçºÎ¶¼Ìí¼Óµ½Ä©Î²
+	//orderColumns.append(colSort);///æ— è®ºå¦‚ä½•éƒ½æ·»åŠ åˆ°æœ«å°¾
 	if (!bHasSorted)
-		orderColumns.append(colSort);///Î´Ôø²ÎÓëÅÅĞòÔòÌí¼Óµ½Ä©Î²
+		orderColumns.append(colSort);///æœªæ›¾å‚ä¸æ’åºåˆ™æ·»åŠ åˆ°æœ«å°¾
 	emit layoutAboutToBeChanged();
 	sortChildrenItems(rootItem, column, order/*, true*/);
 	emit layoutChanged();
@@ -303,13 +303,13 @@ bool TreeModel::insertColumns(int position, int columns, const QModelIndex& pare
 	success = rootItem->insertColumns(position, columns);
 	endInsertColumns();
 
-	///¸üĞÂÅÅĞòÁĞ¡¢·Ö×éÁĞµÄ´æ´¢Öµ
+	///æ›´æ–°æ’åºåˆ—ã€åˆ†ç»„åˆ—çš„å­˜å‚¨å€¼
 	for (int i = 0; i < orderColumns.size(); i++)
 	{
 		QPair<int, Qt::SortOrder> sord = orderColumns.at(i);
 		if (sord.first >= position)
 		{
-			sord.first += columns;	///positionÖ®ºóµÄÁĞºóÒÆ
+			sord.first += columns;	///positionä¹‹åçš„åˆ—åç§»
 		}
 	}
 	for (int i = 0; i < groupColumns.size(); i++)
@@ -328,9 +328,9 @@ bool TreeModel::removeColumns(int position, int columns, const QModelIndex& pare
 {
 	bool success;
 
-	///É¾³ıÁĞ»áÓ°Ïìµ½Ô­À´µÄÅÅĞòºÍ·Ö×é£¬ÏÈ´¦Àí±»É¾³ıµÄÅÅĞòºÍ·Ö×é£¬È»ºóÔÙ×öÉ¾³ıÁĞ²Ù×÷
-	///×îºó¸üĞÂÅÅĞòÁĞ¡¢·Ö×éÁĞµÄ´æ´¢Öµ
-	for (int i = 0; i < groupColumns.size(); i++)	///É¾³ı·Ö×é
+	///åˆ é™¤åˆ—ä¼šå½±å“åˆ°åŸæ¥çš„æ’åºå’Œåˆ†ç»„ï¼Œå…ˆå¤„ç†è¢«åˆ é™¤çš„æ’åºå’Œåˆ†ç»„ï¼Œç„¶åå†åšåˆ é™¤åˆ—æ“ä½œ
+	///æœ€åæ›´æ–°æ’åºåˆ—ã€åˆ†ç»„åˆ—çš„å­˜å‚¨å€¼
+	for (int i = 0; i < groupColumns.size(); i++)	///åˆ é™¤åˆ†ç»„
 	{
 		int gcol = groupColumns.at(i);
 		if (gcol >= position && gcol < (position + columns))
@@ -344,13 +344,13 @@ bool TreeModel::removeColumns(int position, int columns, const QModelIndex& pare
 		QPair<int, Qt::SortOrder> odr = orderColumns.at(i);
 		if (odr.first < position || odr.first >= position + columns)
 		{
-			sortOrds.append(odr);	///±£´æ²»±»É¾³ıµÄÅÅĞòÁĞ
+			sortOrds.append(odr);	///ä¿å­˜ä¸è¢«åˆ é™¤çš„æ’åºåˆ—
 		}
 	}
 	sortOrds.swap(orderColumns);
-	doSortByColumns();	///ÖØĞÂÅÅĞò
+	doSortByColumns();	///é‡æ–°æ’åº
 
-	/////////////É¾³ıÁĞ
+	/////////////åˆ é™¤åˆ—
 	beginRemoveColumns(parent, position, position + columns - 1);
 	success = rootItem->removeColumns(position, columns);
 	endRemoveColumns();
@@ -358,8 +358,8 @@ bool TreeModel::removeColumns(int position, int columns, const QModelIndex& pare
 	if (rootItem->columnCount() == 0)
 		removeRows(0, rowCount());
 
-	///¸üĞÂÅÅĞòÁĞ¡¢·Ö×éÁĞµÄ´æ´¢Öµ
-	for (int i = 0; i < groupColumns.size(); i++)	///É¾³ı·Ö×é
+	///æ›´æ–°æ’åºåˆ—ã€åˆ†ç»„åˆ—çš„å­˜å‚¨å€¼
+	for (int i = 0; i < groupColumns.size(); i++)	///åˆ é™¤åˆ†ç»„
 	{
 		int gcol = groupColumns.at(i);
 		if (gcol > position)
@@ -422,12 +422,12 @@ bool TreeModel::setData(const QModelIndex& index, const QVariant& value, int rol
 		}
 		emit dataChanged(createIndex(0, index.column(), pitem->child(0)), createIndex(childCnt - 1, index.column(), pitem->child(childCnt - 1)), QVector<int>(1, role));
 	}
-	if (role == Qt::CheckStateRole)	///checkstate ¶Ô¸¸½ÚµãµÄÓ°Ïì
+	if (role == Qt::CheckStateRole)	///checkstate å¯¹çˆ¶èŠ‚ç‚¹çš„å½±å“
 	{
 		setCheckStateAscend(parent(index));
 	}
 
-	///¸ÃĞÅºÅ²»ÓÃÓÚviewÏÔÊ¾£¬´ıËùÓĞÏà¹Ø¸¸½Úµã¡¢×Ó½ÚµãÊı¾İ¸Ä±äÍêºóÔÙ·¢ËÍ£¬Óë×Ó½ÚµãÏà¹ØµÄÍâ²¿Êı¾İÊÇ·ñÒª´¦ÀíÓÉÍâ²¿Âß¼­È·¶¨
+	///è¯¥ä¿¡å·ä¸ç”¨äºviewæ˜¾ç¤ºï¼Œå¾…æ‰€æœ‰ç›¸å…³çˆ¶èŠ‚ç‚¹ã€å­èŠ‚ç‚¹æ•°æ®æ”¹å˜å®Œåå†å‘é€ï¼Œä¸å­èŠ‚ç‚¹ç›¸å…³çš„å¤–éƒ¨æ•°æ®æ˜¯å¦è¦å¤„ç†ç”±å¤–éƒ¨é€»è¾‘ç¡®å®š
 	emit dataAltered(pitem, index.column(), QVector<int>(1, role));
 	return success;
 }
@@ -489,7 +489,7 @@ void TreeModel::setSortAbled(bool enable)
 	return;
 }
 
-void TreeModel::resetModelData(TreeItem* rItem) // ÖØÉèÄ£ĞÍÊı¾İ
+void TreeModel::resetModelData(TreeItem* rItem) // é‡è®¾æ¨¡å‹æ•°æ®
 {
 	beginResetModel();
 	if (rootItem && rootItem != rItem)
@@ -501,8 +501,8 @@ void TreeModel::resetModelData(TreeItem* rItem) // ÖØÉèÄ£ĞÍÊı¾İ
 	endResetModel();
 }
 
-////Ôö¼Ó°´×Ö¶Î·Ö×é
-void TreeModel::addGroupColumn(int column) //Ôö¼Ó·Ö×é
+////å¢åŠ æŒ‰å­—æ®µåˆ†ç»„
+void TreeModel::addGroupColumn(int column) //å¢åŠ åˆ†ç»„
 {
 	if (groupColumns.indexOf(column) > -1)
 	{
@@ -515,7 +515,7 @@ void TreeModel::addGroupColumn(int column) //Ôö¼Ó·Ö×é
 		if ((*it).first == column)
 			break;
 	}
-	if (it == ite)	///Ã»ÓĞ²ÎÓëÅÅĞò£¬Ä¬ÈÏÔö¼ÓÎªÉıĞòÅÅĞò
+	if (it == ite)	///æ²¡æœ‰å‚ä¸æ’åºï¼Œé»˜è®¤å¢åŠ ä¸ºå‡åºæ’åº
 	{
 		sort(column, Qt::AscendingOrder);
 	}
@@ -528,14 +528,14 @@ void TreeModel::addGroupColumn(int column) //Ôö¼Ó·Ö×é
 	{
 		TreeItem* item = itemQueue.front();
 		itemQueue.pop();
-		if (item->childCount() > 0 && item->child(0)->isVirtualItem()) //Ä¿Â¼½ÚµãÈë¶ÓÁĞ
+		if (item->childCount() > 0 && item->child(0)->isVirtualItem()) //ç›®å½•èŠ‚ç‚¹å…¥é˜Ÿåˆ—
 		{
 			for (int i = 0; i < item->childCount(); i++)
 			{
 				itemQueue.push(item->child(i));
 			}
 		}
-		if (item->childCount() > 0 && !item->child(0)->isVirtualItem()) //×îºóÒ»²ãÄ¿Â¼½Úµã×ö´¦Àí
+		if (item->childCount() > 0 && !item->child(0)->isVirtualItem()) //æœ€åä¸€å±‚ç›®å½•èŠ‚ç‚¹åšå¤„ç†
 		{
 			QMap<QVariant, TreeItem*> varItemMap;
 			QVector<TreeItem*> allChild = item->takeChildAll();
@@ -550,22 +550,22 @@ void TreeModel::addGroupColumn(int column) //Ôö¼Ó·Ö×é
 				else
 				{
 					QVector<QVariant> data(item->columnCount());
-					data[0] = rootItem->data(column).toString() + ":" + sunItem->data(column).toString();//Ä¿Â¼ÏÔÊ¾¸ñÊ½£¨ÁĞÃû: ÁĞÖµ£©
+					data[0] = rootItem->data(column).toString() + ":" + sunItem->data(column).toString();//ç›®å½•æ˜¾ç¤ºæ ¼å¼ï¼ˆåˆ—å: åˆ—å€¼ï¼‰
 					//while (data.count() < item->columnCount())
 					//{
-					//	data << QVariant(); // Ä¿Â¼½ÚµãÆäËûÁĞ¶¼ÉèÎª¿Õ
+					//	data << QVariant(); // ç›®å½•èŠ‚ç‚¹å…¶ä»–åˆ—éƒ½è®¾ä¸ºç©º
 					//}
 
 					//TreeItem* nItem = new TreeItem(data, this, item);
 					TreeItem* nItem = new TreeItem(data, item);
-					nItem->setData(0, sunItem->data(column), Qt::UserRole);	////item[0] UserRole´æ´¢sunItemµÄdisplayRole£¬ÓÃÓÚÉ¾³ı·Ö×émergeÊ±±È½Ï
+					nItem->setData(0, sunItem->data(column), Qt::UserRole);	////item[0] UserRoleå­˜å‚¨sunItemçš„displayRoleï¼Œç”¨äºåˆ é™¤åˆ†ç»„mergeæ—¶æ¯”è¾ƒ
 					nItem->setForeground(0, RGB(120, 120, 120));
 					if (sunItem->isCheckable(0))
 					{
 						nItem->setCheckable(0, true);
 						sunItem->setChecked(0, false);
 					}
-					nItem->setVirtual(true);	////·Ö×éÊ±´´½¨µÄÄ¿Â¼½Úµã£¬±ØĞëÉèÖÃÎªtrue
+					nItem->setVirtual(true);	////åˆ†ç»„æ—¶åˆ›å»ºçš„ç›®å½•èŠ‚ç‚¹ï¼Œå¿…é¡»è®¾ç½®ä¸ºtrue
 					item->appendChild(nItem);
 					nItem->appendChild(sunItem);
 					varItemMap.insert(colVar, nItem);
@@ -578,8 +578,8 @@ void TreeModel::addGroupColumn(int column) //Ôö¼Ó·Ö×é
 	return;
 }
 
-/////É¾³ı°´×Ö¶Î·Ö×é£¬É¾³ıË³Ğò²»ĞèÒª°´ÕÕÌí¼ÓµÄË³Ğò
-void TreeModel::delGroupColumn(int column) //É¾³ılevel¼¶½ÚµãÏÂµÄËùÓĞ×Ó½Úµã£¬Í¬Ê±½«Ëï½Úµã±ä³É×Ó½Úµã
+/////åˆ é™¤æŒ‰å­—æ®µåˆ†ç»„ï¼Œåˆ é™¤é¡ºåºä¸éœ€è¦æŒ‰ç…§æ·»åŠ çš„é¡ºåº
+void TreeModel::delGroupColumn(int column) //åˆ é™¤levelçº§èŠ‚ç‚¹ä¸‹çš„æ‰€æœ‰å­èŠ‚ç‚¹ï¼ŒåŒæ—¶å°†å­™èŠ‚ç‚¹å˜æˆå­èŠ‚ç‚¹
 {
 	int level = groupColumns.indexOf(column);
 	if (level < 0)
@@ -595,7 +595,7 @@ void TreeModel::delGroupColumn(int column) //É¾³ılevel¼¶½ÚµãÏÂµÄËùÓĞ×Ó½Úµã£¬Í¬Ê±
 	{
 		TreeItem* item = itemQueue.front();
 		itemQueue.pop();
-		if (item->levelOfItem() == level) // ÕÒµ½²Ù×÷½Úµã£¬¶ÔÓ¦·Ö×éÁĞ½ÚµãµÄ¸¸Ç×½Úµã£¬ÒªÉ¾³ıµÄ½ÚµãÊÇ¸Ã½ÚµãµÄ×Ó½Úµã
+		if (item->levelOfItem() == level) // æ‰¾åˆ°æ“ä½œèŠ‚ç‚¹ï¼Œå¯¹åº”åˆ†ç»„åˆ—èŠ‚ç‚¹çš„çˆ¶äº²èŠ‚ç‚¹ï¼Œè¦åˆ é™¤çš„èŠ‚ç‚¹æ˜¯è¯¥èŠ‚ç‚¹çš„å­èŠ‚ç‚¹
 		{
 			QVector<TreeItem*> allChild = item->takeChildAll();
 			for (int i = 0; i < allChild.size(); i++)
@@ -605,7 +605,7 @@ void TreeModel::delGroupColumn(int column) //É¾³ılevel¼¶½ÚµãÏÂµÄËùÓĞ×Ó½Úµã£¬Í¬Ê±
 			qDeleteAll(allChild);
 			mergeSameGroupedItems(item);
 		}
-		else if (item->levelOfItem() < level) // »¹Ã»µ½´ïlevel²ã£¬¼ÌĞø±éÀú
+		else if (item->levelOfItem() < level) // è¿˜æ²¡åˆ°è¾¾levelå±‚ï¼Œç»§ç»­éå†
 		{
 			for (int i = 0; i < item->childCount(); ++i)
 			{
@@ -624,8 +624,8 @@ void TreeModel::delGroupColumn(int column) //É¾³ılevel¼¶½ÚµãÏÂµÄËùÓĞ×Ó½Úµã£¬Í¬Ê±
 	return;
 }
 
-////¸ù¾İgroupColumnsÖ´ĞĞ·Ö×é£¬¿ÉÄÜ»áÓÃµ½
-//Ò»¶¨ÒªÊÇÔÚÃ»ÓĞ·Ö×éµÄÇé¿öÏÂ×ö
+////æ ¹æ®groupColumnsæ‰§è¡Œåˆ†ç»„ï¼Œå¯èƒ½ä¼šç”¨åˆ°
+//ä¸€å®šè¦æ˜¯åœ¨æ²¡æœ‰åˆ†ç»„çš„æƒ…å†µä¸‹åš
 void TreeModel::doGroupByColumns()
 {
 	QVector<int> gcols;
@@ -637,8 +637,8 @@ void TreeModel::doGroupByColumns()
 	}
 }
 
-////¸ù¾İgroupColumnsÖ´ĞĞ·Ö×é£¬¿ÉÄÜ»áÓÃµ½
-//Ò»¶¨ÒªÊÇÔÚÃ»ÓĞ·Ö×éµÄÇé¿öÏÂ×ö
+////æ ¹æ®groupColumnsæ‰§è¡Œåˆ†ç»„ï¼Œå¯èƒ½ä¼šç”¨åˆ°
+//ä¸€å®šè¦æ˜¯åœ¨æ²¡æœ‰åˆ†ç»„çš„æƒ…å†µä¸‹åš
 void TreeModel::doGroupByColumns(const QVector<int>& colVec)
 {
 	groupColumns.clear();
@@ -649,8 +649,8 @@ void TreeModel::doGroupByColumns(const QVector<int>& colVec)
 	}
 }
 
-////¸ù¾İorderColumnsÖ´ĞĞÅÅĞò£¬¿ÉÄÜ»áÓÃµ½
-//ÔÚÊı¾İÖØÉèÇÒÃ»ÓĞÅÅĞòÊ±µ÷ÓÃ£¬»Ö¸´Ô­ÅÅĞò×´Ì¬
+////æ ¹æ®orderColumnsæ‰§è¡Œæ’åºï¼Œå¯èƒ½ä¼šç”¨åˆ°
+//åœ¨æ•°æ®é‡è®¾ä¸”æ²¡æœ‰æ’åºæ—¶è°ƒç”¨ï¼Œæ¢å¤åŸæ’åºçŠ¶æ€
 void TreeModel::doSortByColumns()
 {
 	MultiColumnOrder sorders = MultiColumnOrder();
@@ -668,12 +668,12 @@ void TreeModel::doSortByColumns(MultiColumnOrder sortOrders)
 	doSortByColumns();
 }
 
-///²éÕÒrecord£¬ÈÎÒ»ÁĞÖµÓëvarÆ¥Åä£¬·µ»ØµÚÒ»¸öÆ¥ÅäµÄindex,·ñÔò·µ»Ø
+///æŸ¥æ‰¾recordï¼Œä»»ä¸€åˆ—å€¼ä¸varåŒ¹é…ï¼Œè¿”å›ç¬¬ä¸€ä¸ªåŒ¹é…çš„index,å¦åˆ™è¿”å›
 QModelIndex TreeModel::findRecordMatchVal(const QVariant& var)
 {
 	return findRecordNoColumn(rootItem, var);
 }
-///ÖØÔØfindRecord£¬¼ÓÈëÁĞÏŞÖÆ
+///é‡è½½findRecordï¼ŒåŠ å…¥åˆ—é™åˆ¶
 QModelIndex TreeModel::findRecordMatchValByColumn(const QVariant& var, int column)
 {
 	return findRecordByColumn(rootItem, var, column);
@@ -731,7 +731,7 @@ void TreeModel::setHeader(TreeItem* root)
 	rootItem = root;
 }
 
-///merge item ½ÚµãÏÂÏàÍ¬µÄ·ÖÀàÄ¿Â¼
+///merge item èŠ‚ç‚¹ä¸‹ç›¸åŒçš„åˆ†ç±»ç›®å½•
 void TreeModel::mergeSameGroupedItems(TreeItem* item)
 {
 	std::queue<TreeItem*> itemQueue;
@@ -742,8 +742,8 @@ void TreeModel::mergeSameGroupedItems(TreeItem* item)
 	{
 		pitem = itemQueue.front();
 		itemQueue.pop();
-		//pitemµÄ×Ó½ÚµãÎª·Ç·Ö×éÉú³ÉµÄÄ¿Â¼½ÚµãÔòÎŞĞè´¦Àí
-		if (pitem->childCount() > 0 && pitem->child(0)->isVirtualItem())	//·Ö×éÉú³ÉµÄÄ¿Â¼½Úµã²»»áºÍÔ­Ê¼Êı¾İ½ÚµãÎ»ÓÚÍ¬Ò»¸ß¶È£¬Òò´ËÅĞ¶Ïchild(0)ÊÇ·ñÎªĞé¼´¿É
+		//pitemçš„å­èŠ‚ç‚¹ä¸ºéåˆ†ç»„ç”Ÿæˆçš„ç›®å½•èŠ‚ç‚¹åˆ™æ— éœ€å¤„ç†
+		if (pitem->childCount() > 0 && pitem->child(0)->isVirtualItem())	//åˆ†ç»„ç”Ÿæˆçš„ç›®å½•èŠ‚ç‚¹ä¸ä¼šå’ŒåŸå§‹æ•°æ®èŠ‚ç‚¹ä½äºåŒä¸€é«˜åº¦ï¼Œå› æ­¤åˆ¤æ–­child(0)æ˜¯å¦ä¸ºè™šå³å¯
 		{
 			std::map<QVariant, TreeItem*>::iterator it;
 			for (int i = 0; i < pitem->childCount();)
@@ -753,19 +753,19 @@ void TreeModel::mergeSameGroupedItems(TreeItem* item)
 				if ((it = itemMap.find(value)) == itemMap.end())
 				{
 					itemMap[value] = citem;
-					i++;	//Ã»ÓĞ·¢Éúmerge£¬×Ó½Úµã²»»á±»É¾³ı£¬i++
+					i++;	//æ²¡æœ‰å‘ç”Ÿmergeï¼Œå­èŠ‚ç‚¹ä¸ä¼šè¢«åˆ é™¤ï¼Œi++
 				}
 				else
 				{
 					itemMap[value]->appendChildList(citem->takeChildAll());
-					delete pitem->takeChildAt(i);	//¸Ã×Ó½ÚµãµÄ×Ó½Úµã±»mergeµ½Ö®Ç°ÏàÍ¬groupµÄĞÖµÜ½ÚµãÏÂ£¬±ä³ÉÁËÒ»¸ö¿Õ·Ö×é£¬ĞèÒªÉ¾³ı
+					delete pitem->takeChildAt(i);	//è¯¥å­èŠ‚ç‚¹çš„å­èŠ‚ç‚¹è¢«mergeåˆ°ä¹‹å‰ç›¸åŒgroupçš„å…„å¼ŸèŠ‚ç‚¹ä¸‹ï¼Œå˜æˆäº†ä¸€ä¸ªç©ºåˆ†ç»„ï¼Œéœ€è¦åˆ é™¤
 				}
 			}
 			for (int i = 0; i < pitem->childCount(); i++)
 			{
-				itemQueue.push(pitem->child(i));	//½«mergeÖ®ºóµÄ×Ó½Úµã¼ÓÈë¶ÓÁĞ£¬¶ÔÃ¿¸ö×Ó½Úµã×ömerge
+				itemQueue.push(pitem->child(i));	//å°†mergeä¹‹åçš„å­èŠ‚ç‚¹åŠ å…¥é˜Ÿåˆ—ï¼Œå¯¹æ¯ä¸ªå­èŠ‚ç‚¹åšmerge
 			}
-			itemMap.clear();	//Çå¿Õ£¬¿ªÆôÏÂÒ»ÂÖ
+			itemMap.clear();	//æ¸…ç©ºï¼Œå¼€å¯ä¸‹ä¸€è½®
 		}
 	}
 }
@@ -796,7 +796,7 @@ int TreeModel::itemCounts()
 	return itemVector.size();
 }
 
-///ÉèÖÃmodelÈ«¾ÖÄ¬ÈÏÊôĞÔ
+///è®¾ç½®modelå…¨å±€é»˜è®¤å±æ€§
 void TreeModel::setDefaultAttrOfModel()
 {
 	attrOfModel[Qt::TextAlignmentRole] = 0;
@@ -877,9 +877,9 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 	{
 		return;
 	}
-	auto compare = std::bind(&TreeModel::itemLessThan, this, std::placeholders::_1, std::placeholders::_2);
+	//auto compare = std::bind(&TreeModel::itemLessThan, this, std::placeholders::_1, std::placeholders::_2);
 	MultiColumnOrder& sortOdr = orderColumns;
-	int indexOfColumn = sortOdr.size() - 1;///µ±Ç°ÅÅĞòÁĞÔÚËùÓĞÅÅĞòÁĞÖĞµÄÎ»ÖÃ
+	int indexOfColumn = sortOdr.size() - 1;///å½“å‰æ’åºåˆ—åœ¨æ‰€æœ‰æ’åºåˆ—ä¸­çš„ä½ç½®
 	for (int i = 0; i < sortOdr.size(); i++)
 	{
 		if (sortOdr.at(i).first == column)
@@ -893,9 +893,9 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 	QVector<int>& groupCols = groupColumns;
 	int level;
 	itemQueue.push(parent);
-	if ((level = groupCols.indexOf(column)) < 0)	///Ò¶×Ó½ÚµãÅÅĞò
+	if ((level = groupCols.indexOf(column)) < 0)	///å¶å­èŠ‚ç‚¹æ’åº
 	{
-		compare = std::bind(order == Qt::AscendingOrder ? &TreeModel::itemLessThan : &TreeModel::itemGreaterThan, this, std::placeholders::_1, std::placeholders::_2);
+		auto compare = std::bind(order == Qt::AscendingOrder ? &TreeModel::itemLessThan : &TreeModel::itemGreaterThan, this, std::placeholders::_1, std::placeholders::_2);
 		while (!itemQueue.empty())
 		{
 			pitem = itemQueue.front();
@@ -907,33 +907,33 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 					itemQueue.push(pitem->child(i));
 				}
 			}
-			else ///¶ÔpitemµÄ×Ó½ÚµãÅÅĞò
+			else ///å¯¹pitemçš„å­èŠ‚ç‚¹æ’åº
 			{
 				QVector<TreeItem*>& itemVec = pitem->childItems;
 				std::map<TreeItem*, int> bfIndexMap, afIndexMap;
-				if (sortOdr.size() > 1)	///¶àÁĞÅÅĞò
+				if (sortOdr.size() > 1)	///å¤šåˆ—æ’åº
 				{
-					int lastSortCol = sortOdr.at(sortOdr.size() - 2).first;	///ÉÏÒ»ÅÅĞò×Ö¶Î
+					int lastSortCol = sortOdr.at(sortOdr.size() - 2).first;	///ä¸Šä¸€æ’åºå­—æ®µ
 					QVector<TreeItem*>::iterator it1 = itemVec.begin(), it2 = it1, ite = itemVec.end(), it3;
 					while (it2 != ite)
 					{
-						while (it2 != ite && multiColEqual(*it1, *it2, indexOfColumn))	///ÔÚ¸ÃÁĞÖ®Ç°×Ö¶ÎÅÅĞòµÄ»ù´¡ÉÏ¶ÔQvector¾Ö²¿ÅÅĞò  
+						while (it2 != ite && multiColEqual(*it1, *it2, indexOfColumn))	///åœ¨è¯¥åˆ—ä¹‹å‰å­—æ®µæ’åºçš„åŸºç¡€ä¸Šå¯¹Qvectorå±€éƒ¨æ’åº  
 							it2++;
 						for (it3 = it1; it3 != it2; it3++)
 						{
-							bfIndexMap[*it3] = it3 - itemVec.begin();	///±£´æÅÅĞòÖ®Ç°µÄÏÂ±ê
+							bfIndexMap[*it3] = it3 - itemVec.begin();	///ä¿å­˜æ’åºä¹‹å‰çš„ä¸‹æ ‡
 						}
-						qStableSort(it1, it2, compare);	///ÅÅĞò
+						qStableSort(it1, it2, compare);	///æ’åº
 						for (it3 = it1; it3 != it2; it3++)
 						{
-							afIndexMap[*it3] = it3 - itemVec.begin();	///±£´æÅÅĞòÖ®ºóµÄÏÂ±ê
+							afIndexMap[*it3] = it3 - itemVec.begin();	///ä¿å­˜æ’åºä¹‹åçš„ä¸‹æ ‡
 						}
 						it1 = it2;
 					}
 					QModelIndexList fromList, toList;
 					std::map<TreeItem*, int>::iterator itm, itme;
 					itme = bfIndexMap.end();
-					for (itm = bfIndexMap.begin(); itm != itme; itm++)	///map ±£Ö¤ÁË±éÀúµÄÓĞĞòĞÔ
+					for (itm = bfIndexMap.begin(); itm != itme; itm++)	///map ä¿è¯äº†éå†çš„æœ‰åºæ€§
 					{
 						toList.append(createIndex(itm->second, 0, itm->first));
 					}
@@ -944,7 +944,7 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 					}
 					changePersistentIndexList(fromList, toList);	////
 				}
-				else ///µ¥ÁĞÅÅĞò
+				else ///å•åˆ—æ’åº
 				{
 					QVector<TreeItem*>::iterator it = itemVec.begin(), ite = itemVec.end();
 					int index = 0;
@@ -952,7 +952,7 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 					{
 						bfIndexMap[*it] = index;
 					}
-					qStableSort(itemVec.begin(), itemVec.end(), compare);	///¶ÔQvector×öÈ«¾ÖÅÅĞò
+					qStableSort(itemVec.begin(), itemVec.end(), compare);	///å¯¹Qvectoråšå…¨å±€æ’åº
 					for (it = itemVec.begin(), index = 0; it != ite; it++, index++)
 					{
 						afIndexMap[*it] = index;
@@ -960,7 +960,7 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 					QModelIndexList fromList, toList;
 					std::map<TreeItem*, int>::iterator itm, itme;
 					itme = bfIndexMap.end();
-					for (itm = bfIndexMap.begin(); itm != itme; itm++)	///map ±£Ö¤ÁË±éÀúµÄÓĞĞòĞÔ
+					for (itm = bfIndexMap.begin(); itm != itme; itm++)	///map ä¿è¯äº†éå†çš„æœ‰åºæ€§
 					{
 						fromList.append(createIndex(itm->second, 0, itm->first));
 					}
@@ -974,9 +974,9 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 			}
 		}
 	}
-	else	///Ä¿Â¼½ÚµãÅÅĞò
+	else	///ç›®å½•èŠ‚ç‚¹æ’åº
 	{
-		compare = std::bind(order == Qt::AscendingOrder ? &TreeModel::directItemLessThan : &TreeModel::directItemGreaterThan, this, std::placeholders::_1, std::placeholders::_2);
+		auto compare = std::bind(order == Qt::AscendingOrder ? &TreeModel::directItemLessThan : &TreeModel::directItemGreaterThan, this, std::placeholders::_1, std::placeholders::_2);
 		while (!itemQueue.empty())
 		{
 			pitem = itemQueue.front();
@@ -988,7 +988,7 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 					itemQueue.push(pitem->child(i));
 				}
 			}
-			else if (pitem->itemLevel == level)///¶Ô×Ó½ÚµãĞòÁĞ(¼´ÒªÅÅĞòµÄÄ¿Â¼½ÚµãĞòÁĞ)ÅÅĞò
+			else if (pitem->itemLevel == level)///å¯¹å­èŠ‚ç‚¹åºåˆ—(å³è¦æ’åºçš„ç›®å½•èŠ‚ç‚¹åºåˆ—)æ’åº
 			{
 				QVector<TreeItem*>& itemVec = pitem->childItems;
 				std::map<TreeItem*, int> bfIndexMap, afIndexMap;
@@ -1006,7 +1006,7 @@ void TreeModel::sortChildrenItems(TreeItem* parent, int column, Qt::SortOrder or
 				QModelIndexList fromList, toList;
 				std::map<TreeItem*, int>::iterator itm, itme;
 				itme = bfIndexMap.end();
-				for (itm = bfIndexMap.begin(); itm != itme; itm++)	///map ±£Ö¤ÁË±éÀúµÄÓĞĞòĞÔ
+				for (itm = bfIndexMap.begin(); itm != itme; itm++)	///map ä¿è¯äº†éå†çš„æœ‰åºæ€§
 				{
 					fromList.append(createIndex(itm->second, 0, itm->first));
 				}
@@ -1061,7 +1061,7 @@ QModelIndex TreeModel::findRecordByColumn(TreeItem* parent, const QVariant& var,
 		for (int i = 0; i < parent->childCount(); i++)
 		{
 			item = parent->child(i);
-			if (item->isVirtualItem())///Ä¿Â¼½Úµã²»ÔÚ²éÕÒ·¶Î§ÄÚ£¬Ö±½ÓÌø¹ı
+			if (item->isVirtualItem())///ç›®å½•èŠ‚ç‚¹ä¸åœ¨æŸ¥æ‰¾èŒƒå›´å†…ï¼Œç›´æ¥è·³è¿‡
 				index = findRecordByColumn(item, var, column);
 			else if (item->data(column) == var)
 				index = createIndex(i, column, item);
@@ -1134,7 +1134,7 @@ void TreeModel::removeItemSyncAt(int row)
 	itemToDelVector << itemVector.takeAt(row);
 	rootItem->setChildren(itemVector);
 }
-///¸ù¾İÏÖÓĞµÄÅÅĞò¡¢·Ö×é¸üĞÂË÷Òı
+///æ ¹æ®ç°æœ‰çš„æ’åºã€åˆ†ç»„æ›´æ–°ç´¢å¼•
 void TreeModel::updateIndex()
 {
 	beginResetModel();
@@ -1145,7 +1145,7 @@ void TreeModel::updateIndex()
 	{
 		pitem = itemQueue.front();
 		itemQueue.pop();
-		if (pitem->childCount() > 0 && pitem->child(0)->isVirtualItem())	///×Ó½ÚµãÎªÄ¿Â¼½ÚµãÔòÈëÁĞ
+		if (pitem->childCount() > 0 && pitem->child(0)->isVirtualItem())	///å­èŠ‚ç‚¹ä¸ºç›®å½•èŠ‚ç‚¹åˆ™å…¥åˆ—
 		{
 			QVector<TreeItem*> sunList = pitem->takeChildAll();
 			for (int i = 0; i < sunList.size(); i++)
@@ -1155,15 +1155,15 @@ void TreeModel::updateIndex()
 		}
 		else
 		{
-			pitem->detachChildren();	///×Ö½ÚµãÎª·ÇÄ¿Â¼½Úµã£¬Ö±½Ó½â°ó¸¸×Ó¹ØÏµ
+			pitem->detachChildren();	///å­—èŠ‚ç‚¹ä¸ºéç›®å½•èŠ‚ç‚¹ï¼Œç›´æ¥è§£ç»‘çˆ¶å­å…³ç³»
 		}
 		if (pitem != rootItem)
 		{
-			delete pitem;			///É¾³ıÄ¿Â¼½Úµã
+			delete pitem;			///åˆ é™¤ç›®å½•èŠ‚ç‚¹
 		}
 	}
-	rootItem->setChildren(itemVector);///Ğ´Ê±¸³Öµ&ÅúÁ¿¸³Öµ
-	//rootItem->appendChildList(itemVector);////Âı¡£¡£¡£
+	rootItem->setChildren(itemVector);///å†™æ—¶èµ‹å€¼&æ‰¹é‡èµ‹å€¼
+	//rootItem->appendChildList(itemVector);////æ…¢ã€‚ã€‚ã€‚
 	doGroupByColumns();
 	doSortByColumns();
 	endResetModel();
@@ -1176,8 +1176,8 @@ void TreeModel::updateIndex()
 	}
 }
 
-////²¿·ÖÏÔÊ¾ÊôĞÔÉèÖÃ
-///ÁĞÊôĞÔÉèÖÃ
+////éƒ¨åˆ†æ˜¾ç¤ºå±æ€§è®¾ç½®
+///åˆ—å±æ€§è®¾ç½®
 void TreeModel::setTextAlignment(int column, Rcspace::RcTextAlignment aenum)
 {
 	if (column < 0 || column >= attrOfColumns.size())
@@ -1210,7 +1210,7 @@ void TreeModel::setIcon(int column, Rcspace::RcIconEnum ienum)
 	}
 	attrOfColumns[column][Qt::DecorationRole] = ienum;
 }
-///È«¾ÖÊôĞÔÉèÖÃ
+///å…¨å±€å±æ€§è®¾ç½®
 void TreeModel::setFont(QFont font)
 {
 	attrOfModel[Qt::FontRole] = font;
@@ -1307,7 +1307,7 @@ bool TreeModel::dropMimeData(const QMimeData* mimeData, Qt::DropAction action, i
 	Q_ASSERT(parentNode);
 	int count;
 	stream >> count;
-	if (row == -1) {	///½ûÖ¹dropÎªĞÂµÄ×Ó½Úµã
+	if (row == -1) {	///ç¦æ­¢dropä¸ºæ–°çš„å­èŠ‚ç‚¹
 		return false;
 	}
 	for (int i = 0; i < count; ++i) {
@@ -1315,11 +1315,11 @@ bool TreeModel::dropMimeData(const QMimeData* mimeData, Qt::DropAction action, i
 		qlonglong nodePtr;
 		stream >> nodePtr;
 		TreeItem* node = reinterpret_cast<TreeItem*>(nodePtr);
-		if (parentNode != node->parent())	///²»ÔÊĞí¿çÄ¿Â¼drop
+		if (parentNode != node->parent())	///ä¸å…è®¸è·¨ç›®å½•drop
 		{
 			return false;
 		}
-		if (node->childNumber() < row)	///ºóĞø²Ù×÷»áÏÈÉ¾³ı¾É½Úµã£¬Ä¿±êÎ»ÖÃ>nodeµ±Ç°Î»ÖÃÊ±£¬row--
+		if (node->childNumber() < row)	///åç»­æ“ä½œä¼šå…ˆåˆ é™¤æ—§èŠ‚ç‚¹ï¼Œç›®æ ‡ä½ç½®>nodeå½“å‰ä½ç½®æ—¶ï¼Œrow--
 			--row;
 		// Remove from old position
 		removeItem(node);
@@ -1441,7 +1441,7 @@ bool TreeModel::reloadData()
 	{
 		pitem = itemQueue.front();
 		itemQueue.pop();
-		if (pitem->childCount() > 0 && pitem->child(0)->isVirtualItem())	///×Ó½ÚµãÎªÄ¿Â¼½ÚµãÔòÈëÁĞ
+		if (pitem->childCount() > 0 && pitem->child(0)->isVirtualItem())	///å­èŠ‚ç‚¹ä¸ºç›®å½•èŠ‚ç‚¹åˆ™å…¥åˆ—
 		{
 			QVector<TreeItem*> sunList = pitem->takeChildAll();
 			for (int i = 0; i < sunList.size(); i++)
@@ -1451,15 +1451,15 @@ bool TreeModel::reloadData()
 		}
 		else
 		{
-			pitem->detachChildren();	///×Ö½ÚµãÎª·ÇÄ¿Â¼½Úµã£¬Ö±½Ó½â°ó¸¸×Ó¹ØÏµ
+			pitem->detachChildren();	///å­—èŠ‚ç‚¹ä¸ºéç›®å½•èŠ‚ç‚¹ï¼Œç›´æ¥è§£ç»‘çˆ¶å­å…³ç³»
 		}
 		if (pitem != rootItem)
 		{
-			delete pitem;			///É¾³ıÄ¿Â¼½Úµã
+			delete pitem;			///åˆ é™¤ç›®å½•èŠ‚ç‚¹
 		}
 	}
 	rootItem->setChildren(itemVector);
-	//rootItem->appendChildList(itemVector);///Âı¡£¡£¡£
+	//rootItem->appendChildList(itemVector);///æ…¢ã€‚ã€‚ã€‚
 	endResetModel();
 	qDeleteAll(itemToDelVector);
 	itemToDelVector.clear();
