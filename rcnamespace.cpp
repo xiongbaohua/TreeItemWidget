@@ -3,8 +3,8 @@
 QIcon Rcspace::specialIcon(Rcspace::RcIconEnum iconEnum)
 {
 	//QPixmap pixmap(":Resources/risk.png");
-	//switch (iconEnum)
-	//{
+	switch (iconEnum)
+	{
 	//case Rcspace::noIcon:
 	//	return QIcon();
 	//case Rcspace::riskNormal:
