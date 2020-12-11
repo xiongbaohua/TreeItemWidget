@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "recorddata.h"
-#include "DisplayRecordData.h"
 
 class ModelRecord
 {
