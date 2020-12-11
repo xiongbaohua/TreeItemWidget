@@ -8,7 +8,6 @@
 #include <qheaderview.h>
 #include <qabstractitemmodel.h>
 #include "treemodel.h"
-#include "formatnumber.h"
 #include "rcnamespace.h"
 #include "recorddata.h"
 
@@ -22,7 +21,7 @@ public:
 	{
 		dataMap = other.dataMap;
 	}
-	inline bool operator==(const TreeItemData& other) const	///ÅÅĞò²»ÓÃ´ËÖØÔØ×ö±È½Ï
+	inline bool operator==(const TreeItemData& other) const	///æ’åºä¸ç”¨æ­¤é‡è½½åšæ¯”è¾ƒ
 	{
 		return dataMap == other.dataMap;
 	}
@@ -74,21 +73,21 @@ public:
 	static bool isVariantLessThen(const QVariant& left, const QVariant& right);
 	static bool isVariantEqualTo(const QVariant& left, const QVariant& right);
 	static bool isVariantGreaterThan(const QVariant& left, const QVariant& right);
-	QVector<TreeItem*> fatChildItems(); // »ñÈ¡ĞÖµÜ½Úµã£¬°üÀ¨×Ô¼º
-	QVector<TreeItem*> broOtherItems(); // »ñÈ¡ĞÖµÜ½Úµã£¬²»°üÀ¨×Ô¼º
-	QVector<TreeItem*> childrenItems(); //»ñÈ¡×Ó½ÚµãÁĞ±íÒıÓÃ
-	TreeItem* takeChildAt(int position); //ÒÆ³ıÖ¸¶¨Î»ÖÃµÄ×Ó½Úµã
-	void appendChild(TreeItem* child); // ÔÚÄ©Î²Ôö¼Ó×Ó½Úµã
-	void prependChild(TreeItem* child); //ÔÚÍ·²¿Ôö¼Ó×Ó½Úµã
-	void insertChildAt(int position, TreeItem* child); // ÔÚÖ¸¶¨Î»ÖÃ²åÈë×Ó½Úµã
-	QVector<TreeItem*> takeChildAll(); /*ÒÆ³ıËùÓĞ×Ó½Úµã*/
-	void setParentItem(TreeItem* parent);/*ÉèÖÃ¸¸Ç×½Úµã*/
-	void appendChildList(const QVector<TreeItem*>& childList); /*ÔÚÄ©Î²ÅúÁ¿²åÈë×Ó½Úµã*/
+	QVector<TreeItem*> fatChildItems(); // è·å–å…„å¼ŸèŠ‚ç‚¹ï¼ŒåŒ…æ‹¬è‡ªå·±
+	QVector<TreeItem*> broOtherItems(); // è·å–å…„å¼ŸèŠ‚ç‚¹ï¼Œä¸åŒ…æ‹¬è‡ªå·±
+	QVector<TreeItem*> childrenItems(); //è·å–å­èŠ‚ç‚¹åˆ—è¡¨å¼•ç”¨
+	TreeItem* takeChildAt(int position); //ç§»é™¤æŒ‡å®šä½ç½®çš„å­èŠ‚ç‚¹
+	void appendChild(TreeItem* child); // åœ¨æœ«å°¾å¢åŠ å­èŠ‚ç‚¹
+	void prependChild(TreeItem* child); //åœ¨å¤´éƒ¨å¢åŠ å­èŠ‚ç‚¹
+	void insertChildAt(int position, TreeItem* child); // åœ¨æŒ‡å®šä½ç½®æ’å…¥å­èŠ‚ç‚¹
+	QVector<TreeItem*> takeChildAll(); /*ç§»é™¤æ‰€æœ‰å­èŠ‚ç‚¹*/
+	void setParentItem(TreeItem* parent);/*è®¾ç½®çˆ¶äº²èŠ‚ç‚¹*/
+	void appendChildList(const QVector<TreeItem*>& childList); /*åœ¨æœ«å°¾æ‰¹é‡æ’å…¥å­èŠ‚ç‚¹*/
 	void setChildren(const QVector<TreeItem*>& itemVector);
 	int levelOfItem();
 	void setItemLevel(int level);
-	void detachChildren();	///½â°ó£¨²»Ïú»Ù£©×Ó½Úµã£¬µ«×Ó½ÚµãµÄ¸¸½Úµã²¢Ã»ÓĞÖØÉè
-	///ÉèÖÃ²¿·ÖÑùÊ½
+	void detachChildren();	///è§£ç»‘ï¼ˆä¸é”€æ¯ï¼‰å­èŠ‚ç‚¹ï¼Œä½†å­èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹å¹¶æ²¡æœ‰é‡è®¾
+	///è®¾ç½®éƒ¨åˆ†æ ·å¼
 	void setForeground(int col, Qt::GlobalColor clr);
 	void setForeground(int col, unsigned long colorVal);
 	void setForeground(int col, int r, int g, int b, int a);
@@ -101,7 +100,7 @@ public:
 	QVariant textAlign(int col);
 	void setIcon(int col, Rcspace::RcIconEnum ienum);
 	QVariant cellIcon(int col);
-	///Ğé½ÚµãÊôĞÔ
+	///è™šèŠ‚ç‚¹å±æ€§
 	void setVirtual(bool bVirtual);
 	bool isVirtualItem();
 	///check state settings
@@ -114,16 +113,16 @@ public:
 	void eraseData(int col, int role);
 	void switchChild(int m, int n);
 private:
-	///recordDataÏà¹Ø£¬Ö»¶ÔÓÑÔª¿ª·Å
+	///recordDataç›¸å…³ï¼Œåªå¯¹å‹å…ƒå¼€æ”¾
 	void setRecordData(RecordData* record);
 	RecordData* innerRecordData();
 private:
-	QVector<TreeItem*> childItems;	///Ê¹ÓÃQVector
+	QVector<TreeItem*> childItems;	///ä½¿ç”¨QVector
 	QVector<TreeItemData> itemData;
-	RecordData* recordData = nullptr;///ÓÃÓÚÏÔÊ¾displayRole
+	RecordData* recordData = nullptr;///ç”¨äºæ˜¾ç¤ºdisplayRole
 	TreeItem* parentItem;
-	int itemLevel;	///Ö»ÔÚÄ¿Â¼½ÚµãÊ¹ÓÃ£¬ÓÃÓÚÅÅĞò
-	bool isVirtual = false;	///ÊÇ·ñĞé½Úµã£¨·Ö×éÊ±Éú³ÉµÄÄ¿Â¼½Úµã£©£¬·Ö×éÊ±´´½¨Ä¿Â¼½ÚµãºóÊÖ¶¯ÉèÖÃÎªtrue
+	int itemLevel;	///åªåœ¨ç›®å½•èŠ‚ç‚¹ä½¿ç”¨ï¼Œç”¨äºæ’åº
+	bool isVirtual = false;	///æ˜¯å¦è™šèŠ‚ç‚¹ï¼ˆåˆ†ç»„æ—¶ç”Ÿæˆçš„ç›®å½•èŠ‚ç‚¹ï¼‰ï¼Œåˆ†ç»„æ—¶åˆ›å»ºç›®å½•èŠ‚ç‚¹åæ‰‹åŠ¨è®¾ç½®ä¸ºtrue
 
 	friend class TreeModel;
 };
